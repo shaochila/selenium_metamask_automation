@@ -10,6 +10,7 @@ EXTENSION_ID = 'nkbihfbeogaeaoehlefnkodbefgpgknn'
 
 
 def downloadMetamaskExtension():
+    print('设置小狐狸')
     print('Setting up metamask extension please wait...')
 
     url = 'https://xord-testing.s3.amazonaws.com/selenium/10.0.2_0.crx'
@@ -23,6 +24,7 @@ def launchSeleniumWebdriver(driverPath):
     global driver
     driver = webdriver.Chrome(options=chrome_options, executable_path=driverPath)
     time.sleep(5)
+    print('小狐狸已加载')
     print("Extension has been loaded")
     return driver
 
@@ -30,9 +32,9 @@ def launchSeleniumWebdriver(driverPath):
 def metamaskSetup(recoveryPhrase, password):
     driver.switch_to.window(driver.window_handles[0])
 
-    driver.find_element_by_xpath('//button[text()="Get Started"]').click()
-    driver.find_element_by_xpath('//button[text()="Import wallet"]').click()
-    driver.find_element_by_xpath('//button[text()="No Thanks"]').click()
+    driver.find_element_by_xpath('//button[text()="开始使用"]').click()
+    driver.find_element_by_xpath('//button[text()="导入钱包"]').click()
+    driver.find_element_by_xpath('//button[text()="不，谢谢"]').click()
 
     time.sleep(5)
 
@@ -41,22 +43,24 @@ def metamaskSetup(recoveryPhrase, password):
     inputs[1].send_keys(password)
     inputs[2].send_keys(password)
     driver.find_element_by_css_selector('.first-time-flow__terms').click()
-    driver.find_element_by_xpath('//button[text()="Import"]').click()
+    driver.find_element_by_xpath('//button[text()="导入"]').click()
 
     time.sleep(5)
 
-    driver.find_element_by_xpath('//button[text()="All Done"]').click()
+    driver.find_element_by_xpath('//button[text()="全部完成"]').click()
     time.sleep(2)
 
     # closing the message popup after all done metamask screen
     driver.find_element_by_xpath('//*[@id="popover-content"]/div/div/section/header/div/button').click()
     time.sleep(2)
+    print("钱包导入完成")
     print("Wallet has been imported successfully")
     time.sleep(10)
 
 
 def changeMetamaskNetwork(networkName):
     # opening network
+    print("改变网络")
     print("Changing network")
     driver.switch_to.window(driver.window_handles[1])
     driver.get('chrome-extension://{}/home.html'.format(EXTENSION_ID))
